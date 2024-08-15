@@ -15,6 +15,7 @@ from models.review import Review
 from models.state import State
 from models.user import User
 import json
+from models import storage
 import os
 import pycodestyle
 import unittest
@@ -113,3 +114,48 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json", "r") as f:
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
+
+
+class TestDBStorage(unittest.TestCase):
+    """Unit tests for the DBStorage class methods"""
+    def setUp(self):
+        """Set up for the tests"""
+        # Create some objects to test
+        self.state = State(name="California")
+        self.city = City(name="San Francisco", state_id=self.state.id)
+        storage.new(self.state)
+        storage.new(self.city)
+        storage.save()
+
+    def tearDown(self):
+        """Clean up after the tests"""
+        storage.delete(self.city)
+        storage.delete(self.state)
+        storage.save()
+
+    def test_get(self):
+        """Test the get method"""
+        state = storage.get(State, self.state.id)
+        self.assertEqual(state, self.state)
+
+    def test_count(self):
+        """Test the count method"""
+        # Test counting all objects
+        all_count = storage.count()
+        self.assertEqual(all_count, 2)  # State and City objects
+
+        # Test counting State objects
+        state_count = storage.count(State)
+        self.assertEqual(state_count, 1)
+
+        # Test counting City objects
+        city_count = storage.count(City)
+        self.assertEqual(city_count, 1)
+
+        # Test counting with an invalid class
+        invalid_count = storage.count("InvalidClass")
+        self.assertEqual(invalid_count, 0)
+
+
+if __name__ == '__main__':
+    unittest.main()
