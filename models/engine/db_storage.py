@@ -12,6 +12,7 @@ from models.review import Review
 from models.state import State
 from models.user import User
 from os import getenv
+from urllib.parse import quote_plus
 import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -28,7 +29,7 @@ class DBStorage:
     def __init__(self):
         """Instantiate a DBStorage object"""
         HBNB_MYSQL_USER = getenv('HBNB_MYSQL_USER')
-        HBNB_MYSQL_PWD = getenv('HBNB_MYSQL_PWD')
+        HBNB_MYSQL_PWD = quote_plus(getenv("HBNB_MYSQL_PWD"))
         HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
         HBNB_ENV = getenv('HBNB_ENV')
@@ -76,17 +77,24 @@ class DBStorage:
         self.__session.remove()
 
     def get(self, cls, id):
-        """ retrieves """
-        if cls in classes.values() and id and type(id) == str:
-            d_obj = self.all(cls)
-            for key, value in d_obj.items():
-                if key.split(".")[1] == id:
-                    return value
-        return None
+        """
+        Retrieves one object based on the class and its ID.
+        """
+        if cls not in classes.values():
+            return None
+        return self.__session.query(cls).filter_by(id=id).first()
 
     def count(self, cls=None):
-        """ counts """
-        data = self.all(cls)
-        if cls in classes.values():
-            data = self.all(cls)
-        return len(data)
+        """
+        Counts the number of objects in storage.
+        """
+        if cls:
+            if cls in classes.values():
+                return self.__session.query(cls).count()
+            else:
+                return 0
+        else:
+            total_count = 0
+            for clss in classes.values():
+                total_count += self.__session.query(clss).count()
+            return total_count
