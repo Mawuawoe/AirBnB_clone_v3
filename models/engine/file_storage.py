@@ -72,9 +72,6 @@ class FileStorage:
     def get(self, cls, id):
         """
         Retrieves one object based on the class and its ID.
-        Args:
-            cls: The class of the object.
-            id: The string representing the object ID.
         """
         if cls and id:
             key = f"{cls.__name__}.{id}"
@@ -84,14 +81,6 @@ class FileStorage:
     def count(self, cls=None):
         """
         Counts the number of objects in storage matching the given class.
-
-        Args:
-            cls: The class of the objects to count.
-            If None, counts all objects.
-
-        Returns:
-            The number of objects in storage matching the given class.
-            If no class is passed, returns the count of all objects in storage.
         """
         if cls is None:
             # If no class is passed, count all objects
