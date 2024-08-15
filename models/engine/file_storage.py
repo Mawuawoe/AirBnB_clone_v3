@@ -72,13 +72,9 @@ class FileStorage:
     def get(self, cls, id):
         """
         Retrieves one object based on the class and its ID.
-
         Args:
             cls: The class of the object.
             id: The string representing the object ID.
-
-        Returns:
-            The object if found, otherwise None.
         """
         if cls and id:
             key = f"{cls.__name__}.{id}"
