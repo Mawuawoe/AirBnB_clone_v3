@@ -74,6 +74,7 @@ class DBStorage:
         from models.review import Review
         from models.state import State
         from models.user import User
+        from models.association_tables import place_amenity
 
         # Create all tables
         Base.metadata.create_all(self.__engine)
