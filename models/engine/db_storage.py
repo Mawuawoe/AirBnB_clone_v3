@@ -76,16 +76,12 @@ class DBStorage:
         from models.user import User
 
         # Create all tables
-        # Base.metadata.create_all(self.__engine)
-        # Create tables in the correct order
-        if not self.__engine.dialect.has_table(self.__engine, 'places'):
-            Base.metadata.create_all(self.__engine, tables=[Amenity.__table__, City.__table__, Place.__table__, Review.__table__, State.__table__, User.__table__])
-        else:
-            Base.metadata.create_all(self.__engine)
-            # Set up the session
-            sess_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
-            Session = scoped_session(sess_factory)
-            self.__session = Session
+        Base.metadata.create_all(self.__engine)
+
+        # Set up the session
+        sess_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(sess_factory)
+        self.__session = Session
 
     """def reload(self):
         reloads data from the database
