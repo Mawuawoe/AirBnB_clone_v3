@@ -76,7 +76,15 @@ class DBStorage:
         from models.user import User
 
         # Create all tables
-        Base.metadata.create_all(self.__engine)
+    # Create all tables in the correct order
+        Base.metadata.create_all(self.__engine, tables=[
+            Amenity.__table__,
+            City.__table__,
+            State.__table__,
+            User.__table__,
+            Place.__table__,
+            Review.__table__,
+    ])
 
         # Set up the session
         sess_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
