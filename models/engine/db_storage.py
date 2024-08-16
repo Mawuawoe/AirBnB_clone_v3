@@ -7,7 +7,7 @@ import models
 from models.amenity import Amenity
 from models.base_model import BaseModel, Base
 from models.city import City
-from models.place import Place
+from models.place import Place, place_amenity
 from models.review import Review
 from models.state import State
 from models.user import User
@@ -67,7 +67,12 @@ class DBStorage:
 
     def reload(self):
         """reloads data from the database"""
-        Base.metadata.create_all(self.__engine)
+        # Create tables explicitly in the order you need
+        Base.metadata.create_all(self.__engine, tables=[
+            Amenity.__table__,
+            Place.__table__,
+            place_amenity  # Ensure the association table is created last
+        ])
         sess_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sess_factory)
         self.__session = Session
