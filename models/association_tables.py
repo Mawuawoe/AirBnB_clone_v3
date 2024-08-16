@@ -1,17 +1,14 @@
-import models
-from models.base_model import BaseModel, Base
-from os import getenv
-import sqlalchemy
-from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
-from sqlalchemy.orm import relationship
+#!/usr/bin/python3
+""" Association table definition for Place and Amenity """
+from models.base_model import Base
+from sqlalchemy import Table, Column, String, ForeignKey
 
-if models.storage_t == 'db':
-    place_amenity = Table('place_amenity', Base.metadata,
-                          Column('place_id', String(60),
-                                 ForeignKey('places.id', onupdate='CASCADE',
-                                            ondelete='CASCADE'),
-                                 primary_key=True),
-                          Column('amenity_id', String(60),
-                                 ForeignKey('amenities.id', onupdate='CASCADE',
-                                            ondelete='CASCADE'),
-                                 primary_key=True))
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id', String(60),
+                             ForeignKey('places.id', onupdate='CASCADE',
+                                        ondelete='CASCADE'),
+                             primary_key=True),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id', onupdate='CASCADE',
+                                        ondelete='CASCADE'),
+                             primary_key=True))

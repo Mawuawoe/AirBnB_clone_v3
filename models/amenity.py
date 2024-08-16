@@ -2,12 +2,7 @@
 """ holds class Amenity"""
 import models
 from models.base_model import BaseModel, Base
-from os import getenv
-import sqlalchemy
 from sqlalchemy import Column, String
-from sqlalchemy.orm import relationship
-from models.association_tables import place_amenity
-
 
 class Amenity(BaseModel, Base):
     """Representation of Amenity """
