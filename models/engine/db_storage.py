@@ -67,16 +67,24 @@ class DBStorage:
     
     def reload(self):
         """Reloads data from the database"""
-        # Import all models to ensure correct table creation order
         from models.amenity import Amenity
         from models.city import City
         from models.place import Place
         from models.review import Review
         from models.state import State
         from models.user import User
+        from sqlalchemy import Column, String
+        from sqlalchemy import Table, MetaData
 
-        # Create all tables
+        # Ensure base metadata is created
         Base.metadata.create_all(self.__engine)
+
+        # Create place_amenity table separately
+        metadata = MetaData(bind=self.__engine)
+        place_amenity = Table('place_amenity', metadata,
+                              Column('place_id', String(60), ForeignKey('places.id', onupdate='CASCADE', ondelete='CASCADE'), primary_key=True),
+                              Column('amenity_id', String(60), ForeignKey('amenities.id', onupdate='CASCADE', ondelete='CASCADE'), primary_key=True))
+        metadata.create_all(self.__engine)
 
         # Set up the session
         sess_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
