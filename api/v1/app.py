@@ -18,6 +18,7 @@ def teardown(self):
     """Calls storage.close()"""
     storage.close()
 
+
 @app.errorhandler(404)
 def not_found(error):
     """
