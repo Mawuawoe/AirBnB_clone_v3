@@ -5,27 +5,14 @@ from models.base_model import BaseModel, Base
 from os import getenv
 import sqlalchemy
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
-from sqlalchemy.orm import relationship 
-
-
-if models.storage_t == 'db':
-    from models.amenity import Amenity
-    place_amenity = Table('place_amenity', Base.metadata,
-                          Column('place_id', String(60),
-                                 ForeignKey('places.id', onupdate='CASCADE',
-                                            ondelete='CASCADE'),
-                                 primary_key=True),
-                          Column('amenity_id', String(60),
-                                 ForeignKey(Amenity.id, onupdate='CASCADE',
-                                            ondelete='CASCADE'),
-                                 primary_key=True))
-
+from sqlalchemy.orm import relationship
 
 class Place(BaseModel, Base):
-    """Representation of Place """
+    """Representation of Place"""
     if models.storage_t == 'db':
         __tablename__ = 'places'
 
+        id = Column(String(60), primary_key=True, nullable=False)
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
         name = Column(String(128), nullable=False)
@@ -36,6 +23,7 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, nullable=False, default=0)
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
+
         reviews = relationship("Review", backref="place")
         amenities = relationship("Amenity", secondary="place_amenity",
                                  backref="place_amenities",
@@ -76,6 +64,20 @@ class Place(BaseModel, Base):
             amenity_list = []
             all_amenities = models.storage.all(Amenity)
             for amenity in all_amenities.values():
-                if amenity.place_id == self.id:
+                if amenity.id in self.amenity_ids:
                     amenity_list.append(amenity)
             return amenity_list
+
+# Define place_amenity table with dynamic references
+if models.storage_t == 'db':
+    from models.amenity import Amenity
+    
+    place_amenity = Table(
+        'place_amenity', Base.metadata,
+        Column('place_id', String(60),
+               ForeignKey(Place.id, onupdate='CASCADE', ondelete='CASCADE'),
+               primary_key=True),
+        Column('amenity_id', String(60),
+               ForeignKey(Amenity.id, onupdate='CASCADE', ondelete='CASCADE'),
+               primary_key=True)
+    )
