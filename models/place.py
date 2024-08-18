@@ -6,7 +6,7 @@ from os import getenv
 import sqlalchemy
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship 
-
+from models.amenity import Amenity
 if models.storage_t == 'db':
     place_amenity = Table('place_amenity', Base.metadata,
                           Column('place_id', String(60),
@@ -14,7 +14,7 @@ if models.storage_t == 'db':
                                             ondelete='CASCADE'),
                                  primary_key=True),
                           Column('amenity_id', String(60),
-                                 ForeignKey('amenities.id', onupdate='CASCADE',
+                                 ForeignKey(Amenity.id, onupdate='CASCADE',
                                             ondelete='CASCADE'),
                                  primary_key=True))
 
