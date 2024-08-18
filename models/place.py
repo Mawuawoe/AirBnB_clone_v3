@@ -7,16 +7,16 @@ import sqlalchemy
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship 
 
-"""if models.storage_t == 'db':
+if models.storage_t == 'db':
     place_amenity = Table('place_amenity', Base.metadata,
                           Column('place_id', String(60),
                                  ForeignKey('places.id', onupdate='CASCADE',
                                             ondelete='CASCADE'),
                                  primary_key=True),
                           Column('amenity_id', String(60),
-                                 ForeignKey('{}.id'.format(Amenity.__tablename__), onupdate='CASCADE',
+                                 ForeignKey('amenities.id', onupdate='CASCADE',
                                             ondelete='CASCADE'),
-                                 primary_key=True))"""
+                                 primary_key=True))
 
 
 class Place(BaseModel, Base):
@@ -24,18 +24,6 @@ class Place(BaseModel, Base):
     if models.storage_t == 'db':
         __tablename__ = 'places'
 
-        # Defining place_amenity inside the class
-        place_amenity = Table(
-            'place_amenity', Base.metadata,
-            Column('place_id', String(60), 
-                   ForeignKey('places.id', onupdate='CASCADE', ondelete='CASCADE'),
-                   primary_key=True),
-            Column('amenity_id', String(60),
-                   ForeignKey('amenities.id', onupdate='CASCADE', ondelete='CASCADE'),
-                   primary_key=True)
-        )
-
-    # Other columns and relationships
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
         name = Column(String(128), nullable=False)
