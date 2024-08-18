@@ -5,8 +5,7 @@ from models.base_model import BaseModel, Base
 from os import getenv
 import sqlalchemy
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
-from sqlalchemy.orm import relationship
-from models.amenity import Amenity 
+from sqlalchemy.orm import relationship 
 
 """if models.storage_t == 'db':
     place_amenity = Table('place_amenity', Base.metadata,
@@ -36,7 +35,7 @@ class Place(BaseModel, Base):
                    primary_key=True)
         )
 
-        # Other columns and relationships
+    # Other columns and relationships
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
         name = Column(String(128), nullable=False)
