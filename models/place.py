@@ -8,7 +8,7 @@ from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship 
 
 
-"""if models.storage_t == 'db':
+if models.storage_t == 'db':
     from models.amenity import Amenity
     place_amenity = Table('place_amenity', Base.metadata,
                           Column('place_id', String(60),
@@ -18,7 +18,7 @@ from sqlalchemy.orm import relationship
                           Column('amenity_id', String(60),
                                  ForeignKey(Amenity.id, onupdate='CASCADE',
                                             ondelete='CASCADE'),
-                                 primary_key=True))"""
+                                 primary_key=True))
 
 
 class Place(BaseModel, Base):
