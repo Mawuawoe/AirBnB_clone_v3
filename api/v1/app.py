@@ -10,7 +10,8 @@ from flask_cors import CORS
 app = Flask(__name__)
 
 # Set up CORS
-CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})  # Allow all origins for development
+CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
+# Allow all origins for development
 
 # Register the blueprint app_views to the Flask instance
 app.register_blueprint(app_views)
