@@ -70,14 +70,9 @@ class Place(BaseModel, Base):
 
 # Define place_amenity table with dynamic references
 if models.storage_t == 'db':
-    from models.amenity import Amenity
-    
+# Place this after the Place class to avoid circular references
     place_amenity = Table(
         'place_amenity', Base.metadata,
-        Column('place_id', String(60),
-               ForeignKey(Place.id, onupdate='CASCADE', ondelete='CASCADE'),
-               primary_key=True),
-        Column('amenity_id', String(60),
-               ForeignKey(Amenity.id, onupdate='CASCADE', ondelete='CASCADE'),
-               primary_key=True)
+        Column('place_id', String(60), ForeignKey(Place.id, onupdate='CASCADE', ondelete='CASCADE'), primary_key=True),
+        Column('amenity_id', String(60), ForeignKey('amenities.id', onupdate='CASCADE', ondelete='CASCADE'), primary_key=True)
     )
