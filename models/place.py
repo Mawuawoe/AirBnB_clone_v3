@@ -32,7 +32,7 @@ class Place(BaseModel, Base):
                    ForeignKey('places.id', onupdate='CASCADE', ondelete='CASCADE'),
                    primary_key=True),
             Column('amenity_id', String(60),
-                   ForeignKey(f'{Amenity.__tablename__}.id', onupdate='CASCADE', ondelete='CASCADE'),
+                   ForeignKey('amenities.id', onupdate='CASCADE', ondelete='CASCADE'),
                    primary_key=True)
         )
 
